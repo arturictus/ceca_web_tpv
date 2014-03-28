@@ -35,27 +35,43 @@ module SermepaWebTpv
 
     def must_options
       {
-        'Ds_Merchant_Amount' =>             amount,
-        'Ds_Merchant_Currency' =>           SermepaWebTpv.currency, #EURO
-        'Ds_Merchant_Order' =>              transaction_number,
-        'Ds_Merchant_ProductDescription' => description,
-        'Ds_Merchant_MerchantCode' =>       SermepaWebTpv.merchant_code,
-        'Ds_Merchant_MerchantSignature' =>  signature,
-        'Ds_Merchant_Terminal' =>           SermepaWebTpv.terminal,
-        'Ds_Merchant_TransactionType' =>    SermepaWebTpv.transaction_type,
-        'Ds_Merchant_ConsumerLanguage' =>   SermepaWebTpv.language,
-        'Ds_Merchant_MerchantURL' =>        url_for(:callback_response_path)
+        'MerchantID'      =>  SermepaWebTpv.merchant_code,
+        'AcquirerBIN'     =>  SermepaWebTpv.acquirer_bin,
+        'TerminalID'      =>  SermepaWebTpv.terminal_id,
+        'URL_OK'          =>  url_for(:redirect_success_path),
+        'URL_NOK'         =>  url_for(:redirect_failure_path),
+        'Firma'           =>  signature,
+        'Cifrado'         =>  'SHA1',
+        'Num_operacion'   =>  transaction_number,
+        'Importe'         =>  amount,
+        'TipoMoneda'      =>  SermepaWebTpv.currency,
+        'Exponente'       =>  "2",
+        'Pago_soportado'  =>  "SSL"
       }
     end
 
     def signature
-      #Ds_Merchant_Amount + Ds_Merchant_Order +Ds_Merchant_MerchantCode + Ds_Merchant_Currency +Ds_Merchant_TransactionType + Ds_Merchant_MerchantURL + CLAVE SECRETA
-      merchant_code = SermepaWebTpv.merchant_code
-      currency = SermepaWebTpv.currency
-      transaction_type = SermepaWebTpv.transaction_type
-      callback_url = url_for(:callback_response_path)
-      merchant_secret_key = SermepaWebTpv.merchant_secret_key
-      Digest::SHA1.hexdigest("#{amount}#{transaction_number}#{merchant_code}#{currency}#{transaction_type}#{callback_url}#{merchant_secret_key}").upcase
+      hash = {
+        clave_encriptacion: SermepaWebTpv.merchant_secret_key,
+        merchant_id:        SermepaWebTpv.merchant_code,
+        acquirer_bin:       SermepaWebTpv.acquirer_bin,
+        terminal_id:        SermepaWebTpv.terminal_id,
+        num_operacion:      transaction_number,
+        importe:            amount,
+        tipo_moneda:        SermepaWebTpv.currency,
+        exponente:          "2",
+        cifrado:            'SHA1',
+        url_ok:             url_for(:redirect_success_path),
+        url_nok:            url_for(:redirect_failure_path)
+      }
+      
+      str = ""
+      hash.each do |key, value|
+        str += value
+      end
+      
+      Digest::SHA1.hexdigest(str).downcase
+    
     end
 
     # Available options
@@ -73,9 +89,8 @@ module SermepaWebTpv
 
     def optional_options
       {
-        'Ds_Merchant_Titular'      => SermepaWebTpv.merchant_name,
-        'Ds_Merchant_UrlKO'        => url_for(:redirect_failure_path),
-        'Ds_Merchant_UrlOK'        => url_for(:redirect_success_path)
+        'Descripcion' => description,
+        'Idioma'          =>  SermepaWebTpv.language
       }.delete_if {|key, value| value.blank? }
     end
 

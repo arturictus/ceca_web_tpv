@@ -1,5 +1,22 @@
 require 'active_support/core_ext/module/attribute_accessors'
 module SermepaWebTpv
+  #  config example
+  #
+  # config.web_tpv.merchant_code = '123456789' [MerchantID]
+  # config.web_tpv.acquirer_bin = "1234567890"  [AcquirerBIN]
+  # config.web_tpv.terminal_id = "12345678"
+  # config.web_tpv.redirect_success_path = '/payments/success'
+  # config.web_tpv.redirect_failure_path = '/payments/failure'
+  # config.web_tpv.currency = 978 # Euro
+  # config.web_tpv.merchant_secret_key = '99888888' [clave encriptación]
+  # config.web_tpv.bank_url = 'http://tpv.ceca.es:8000/cgi-bin/tpv'
+  # config.web_tpv.response_host = 'www.my_web.es'
+  
+  # Optionals
+  # config.web_tpv.language = '001' #Catala
+  # config.web_tpv.merchant_name = 'RECAMBIOS ARNYX'
+  
+
 
   mattr_accessor :transaction_model_transaction_number_attribute
   @@transaction_model_transaction_number_attribute = :transaction_number
@@ -8,7 +25,7 @@ module SermepaWebTpv
   @@transaction_model_amount_attribute = :amount
 
   mattr_accessor :bank_url
-  @@bank_url = 'https://sis-t.sermepa.es:25443/sis/realizarPago'
+  @@bank_url = 'https://pgw.ceca.es/cgi-bin/tpv'
 
   mattr_accessor :terminal
   @@terminal = 1
@@ -41,6 +58,17 @@ module SermepaWebTpv
 
   mattr_accessor :redirect_failure_path
   @@redirect_failure_path = nil #"/payments/failure"
+  
+  #
+  # CECA IMplementation
+  #
+  mattr_accessor :acquirer_bin
+  @@acquirer_bin = ""
+  mattr_accessor :terminal_id
+  @@terminal_id = ""
+  #
+  #
+  #
 
   autoload :Request, 'sermepa_web_tpv/request'
   autoload :Response, 'sermepa_web_tpv/response'
