@@ -67,7 +67,7 @@ module SermepaWebTpv
       
       str = ""
       hash.each do |key, value|
-        str += value
+        str += value.to_s
       end
       
       Digest::SHA1.hexdigest(str).downcase
