@@ -7,6 +7,7 @@ module SermepaWebTpv
   # config.web_tpv.terminal_id = "12345678"
   # config.web_tpv.redirect_success_path = '/payments/success'
   # config.web_tpv.redirect_failure_path = '/payments/failure'
+  # config.web_tpv.callback_response_path = '/payments/validate'
   # config.web_tpv.currency = 978 # Euro
   # config.web_tpv.merchant_secret_key = '99888888' [clave encriptación]
   # config.web_tpv.bank_url = 'http://tpv.ceca.es:8000/cgi-bin/tpv'
