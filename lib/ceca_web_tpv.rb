@@ -1,5 +1,5 @@
 require 'active_support/core_ext/module/attribute_accessors'
-module SermepaWebTpv
+module CecaWebTpv
   #  config example
   #
   # config.web_tpv.merchant_code = '123456789' [MerchantID]
@@ -71,9 +71,9 @@ module SermepaWebTpv
   #
   #
 
-  autoload :Request, 'sermepa_web_tpv/request'
-  autoload :Response, 'sermepa_web_tpv/response'
+  autoload :Request, 'ceca_web_tpv/request'
+  autoload :Response, 'ceca_web_tpv/response'
 
 end
-require 'sermepa_web_tpv/persistence/active_record'
-require 'sermepa_web_tpv/railtie'
+require 'ceca_web_tpv/persistence/active_record'
+require 'ceca_web_tpv/railtie'

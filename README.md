@@ -1,8 +1,7 @@
-# Sermepa web TPV
+# Ceca web TPV
 
 Add simple web payment tpv to your rails application
 
-Example app source at: https://github.com/ritxi/sermepa_web_tpv_sample_app
 
 Steps to use it:
 
@@ -10,9 +9,9 @@ Steps to use it:
 
 	rails new payment_app
 
-2. Add sermepa_web_tpv to your Gemfile
+2. Add ceca_web_tpv to your Gemfile
 
-	gem 'sermepa_web_tpv'
+	gem 'ceca_web_tpv'
 
 3. Add a transaction model with an amount and transaction_number fields
 
@@ -61,9 +60,9 @@ class PaymentsController
 
   def new
     transaction = Transaction.new(amount: 10)
-    request = SermepaWebTpv::Request.new(transaction, "Transaction description")
+    request = CecaWebTpv::Request.new(transaction, "Transaction description")
     request.transact {|t| t.save }
-    render json: { options: sermepa_request.options, url: sermepa_request.bank_url }
+    render json: { options: ceca_request.options, url: ceca_request.bank_url }
     # Submit a form with given options to the url
   end
 
@@ -78,7 +77,7 @@ class PaymentsController
   end
 
   def validate
-    response = SermepaWebTpv::Response.new(params)
+    response = CecaWebTpv::Response.new(params)
     if response.valid? && response.success?
       # mark your transaction as finished
     end

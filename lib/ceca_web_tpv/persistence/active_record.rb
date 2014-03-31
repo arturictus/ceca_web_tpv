@@ -1,4 +1,4 @@
-module SermepaWebTpv
+module CecaWebTpv
   module Persistence
     module ActiveRecord
       def transaction_number

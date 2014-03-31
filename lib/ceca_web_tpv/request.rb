@@ -1,12 +1,12 @@
 require 'uri'
 require 'digest/sha1'
 
-module SermepaWebTpv
+module CecaWebTpv
   class Request < Struct.new(:transaction, :description)
-    include SermepaWebTpv::Persistence::ActiveRecord
+    include CecaWebTpv::Persistence::ActiveRecord
 
     def bank_url
-      SermepaWebTpv.bank_url
+      CecaWebTpv.bank_url
     end
 
     def options
@@ -22,11 +22,11 @@ module SermepaWebTpv
     private
 
     def transaction_number_attribute
-      SermepaWebTpv.transaction_model_transaction_number_attribute
+      CecaWebTpv.transaction_model_transaction_number_attribute
     end
 
     def transaction_model_amount_attribute
-      SermepaWebTpv.transaction_model_amount_attribute
+      CecaWebTpv.transaction_model_amount_attribute
     end
 
     def amount
@@ -35,16 +35,16 @@ module SermepaWebTpv
 
     def must_options
       {
-        'MerchantID'      =>  SermepaWebTpv.merchant_code,
-        'AcquirerBIN'     =>  SermepaWebTpv.acquirer_bin,
-        'TerminalID'      =>  SermepaWebTpv.terminal_id,
+        'MerchantID'      =>  CecaWebTpv.merchant_code,
+        'AcquirerBIN'     =>  CecaWebTpv.acquirer_bin,
+        'TerminalID'      =>  CecaWebTpv.terminal_id,
         'URL_OK'          =>  url_for(:redirect_success_path),
         'URL_NOK'         =>  url_for(:redirect_failure_path),
         'Firma'           =>  signature,
         'Cifrado'         =>  'SHA1',
         'Num_operacion'   =>  transaction_number,
         'Importe'         =>  amount,
-        'TipoMoneda'      =>  SermepaWebTpv.currency,
+        'TipoMoneda'      =>  CecaWebTpv.currency,
         'Exponente'       =>  "2",
         'Pago_soportado'  =>  "SSL"
       }
@@ -52,13 +52,13 @@ module SermepaWebTpv
 
     def signature
       hash = {
-        clave_encriptacion: SermepaWebTpv.merchant_secret_key,
-        merchant_id:        SermepaWebTpv.merchant_code,
-        acquirer_bin:       SermepaWebTpv.acquirer_bin,
-        terminal_id:        SermepaWebTpv.terminal_id,
+        clave_encriptacion: CecaWebTpv.merchant_secret_key,
+        merchant_id:        CecaWebTpv.merchant_code,
+        acquirer_bin:       CecaWebTpv.acquirer_bin,
+        terminal_id:        CecaWebTpv.terminal_id,
         num_operacion:      transaction_number,
         importe:            amount,
-        tipo_moneda:        SermepaWebTpv.currency,
+        tipo_moneda:        CecaWebTpv.currency,
         exponente:          "2",
         cifrado:            'SHA1',
         url_ok:             url_for(:redirect_success_path),
@@ -79,8 +79,8 @@ module SermepaWebTpv
     # redirect_failure_path
     # callback_response_path
     def url_for(option)
-      host = SermepaWebTpv.response_host
-      path = SermepaWebTpv.send(option)
+      host = CecaWebTpv.response_host
+      path = CecaWebTpv.send(option)
 
       if host.present? && path.present?
         URI.join("http://#{host}", path).to_s
@@ -90,7 +90,7 @@ module SermepaWebTpv
     def optional_options
       {
         'Descripcion' => description,
-        'Idioma'          =>  SermepaWebTpv.language
+        'Idioma'          =>  CecaWebTpv.language
       }.delete_if {|key, value| value.blank? }
     end
 

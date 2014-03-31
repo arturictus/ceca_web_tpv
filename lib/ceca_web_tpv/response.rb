@@ -1,7 +1,7 @@
 require 'digest/sha1'
 require "forwardable"
 
-module SermepaWebTpv
+module CecaWebTpv
   class Response < Struct.new(:response)
     
     extend Forwardable
@@ -29,7 +29,7 @@ module SermepaWebTpv
 #         #{params[:Ds_MerchantCode]}
 #         #{params[:Ds_Currency]}
 #         #{params[:Ds_Response]}
-#         #{SermepaWebTpv.merchant_secret_key}
+#         #{CecaWebTpv.merchant_secret_key}
 #       ).join
 #       Digest::SHA1.hexdigest(response).upcase
 #     end
