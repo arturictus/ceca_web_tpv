@@ -14,7 +14,7 @@ module SermepaWebTpv
   # config.web_tpv.response_host = 'www.my_web.es'
   
   # Optionals
-  # config.web_tpv.language = '001' #Catala
+  # config.web_tpv.language = 1 #castellano
   # config.web_tpv.merchant_name = 'RECAMBIOS ARNYX'
   
 
@@ -66,7 +66,7 @@ module SermepaWebTpv
   mattr_accessor :acquirer_bin
   @@acquirer_bin = ""
   mattr_accessor :terminal_id
-  @@terminal_id = ""
+  @@terminal_id = "00000003"
   #
   #
   #
