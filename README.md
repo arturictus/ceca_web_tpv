@@ -23,19 +23,23 @@ Steps to use it:
 ```ruby
 module MyApp
   class Application < Rails::Application
-    config.web_tpv.bank_url = 'https://sis-t.sermepa.es:25443/sis/realizarPago'
-    config.web_tpv.response_host = 'my_application_host.com'
-    config.web_tpv.merchant_code = '000000000'
-    config.web_tpv.terminal = 1
-    config.web_tpv.callback_response_path = '/payments/validate'
+		# MerchantID
+    config.web_tpv.merchant_code = '123456789' 
+		# AcquirerBIN
+    config.web_tpv.acquirer_bin = "1234567890" 
+    config.web_tpv.terminal_id = "12345678"
     config.web_tpv.redirect_success_path = '/payments/success'
     config.web_tpv.redirect_failure_path = '/payments/failure'
-    config.web_tpv.merchant_secret_key = 'superseeeecretstring'
+    config.web_tpv.callback_response_path = '/payments/validate'
     config.web_tpv.currency = 978 # Euro
-
-    config.web_tpv.transaction_type = 0
-    config.web_tpv.language = '003' #Catala
-    config.web_tpv.merchant_name = 'MY MERCHANT NAME'
+		# clave encriptación
+    config.web_tpv.merchant_secret_key = '99888888' 
+    config.web_tpv.bank_url = 'http://tpv.ceca.es:8000/cgi-bin/tpv'
+    config.web_tpv.response_host = 'www.my_web.es'
+  
+   # Optionals
+    config.web_tpv.language = 1 #castellano
+    config.web_tpv.merchant_name = 'online shop'
   end
 end
 ```
